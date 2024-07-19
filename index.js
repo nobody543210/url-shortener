@@ -31,7 +31,8 @@ const db = client.db('url')
 const urls = db.collection('url')
 
 
-app.get('/', function(req, res) {
+app.get('/', async (req, res) => {
+      await client.connect();
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
@@ -44,7 +45,7 @@ app.post('/api/shorturl', function(req, res) {
     if(!address){
       res.json({ error: 'invalid url' })
     }else{
-    await client.connect();
+
       const urlCount = await urls.countDocuments({});
       const urlDoc = {
         url,
